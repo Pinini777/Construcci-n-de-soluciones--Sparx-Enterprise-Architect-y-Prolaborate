@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="Addino.csproj" Id="ac47175a-e262-45dd-8ac5-1a8570d2a078">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+</Solution>

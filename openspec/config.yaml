@@ -1,0 +1,55 @@
+schema: spec-driven
+
+context: |
+  Project: Addino Enterprise Architect add-in.
+  Stack: C# class library targeting .NET Framework 4.7.2, built with MSBuild/Visual Studio.
+  Architecture: COM-visible Enterprise Architect SDK callback class using Interop.EA.
+  Platform: x64 configurations with COM interop registration enabled for Debug builds.
+  Testing: No test runner or test projects detected; strict TDD is disabled.
+  Style: Existing legacy csproj, explicit compile items, four-space C# indentation, English identifiers.
+
+strict_tdd: false
+
+testing:
+  test_runner:
+    available: false
+    command: ""
+    framework: ""
+  layers:
+    unit: false
+    integration: false
+    e2e: false
+  coverage:
+    available: false
+    command: ""
+  quality:
+    linter:
+      available: false
+      command: ""
+    type_checker:
+      available: false
+      command: ""
+    formatter:
+      available: false
+      command: ""
+  build:
+    available: true
+    command: 'msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64'
+
+rules:
+  proposal:
+    - Include a rollback plan for risky changes.
+  specs:
+    - Use Given/When/Then scenarios and RFC 2119 keywords.
+  design:
+    - Document architecture decisions with rationale.
+  tasks:
+    - Group tasks by phase and keep each task completable in one session.
+  apply:
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: 'msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64'
+  archive:
+    - Warn before merging destructive deltas.

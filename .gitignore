@@ -3,3 +3,7 @@ bin/
 obj/
 *.user
 *.suo
+# Local AI runtime state
+.atl/
+# Local reference material
+docs/source_material/

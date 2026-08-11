@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Addino
@@ -20,6 +22,11 @@ namespace Addino
         {
             base.OnLoad(e);
             BindGrid();
+
+            // Prevent the Guardar button from closing the form automatically.
+            // Save stays explicit: it shows a result message and leaves the form
+            // open so the user can retry failed rows or keep editing.
+            guardarButton.DialogResult = DialogResult.None;
         }
 
         private void BindGrid()
@@ -99,11 +106,135 @@ namespace Addino
 
         private void GuardarButton_Click(object sender, EventArgs e)
         {
-            // Work Unit 2: end active edit so the active value is included,
-            // but do not call Element.Update() or otherwise persist.
+            // End the active grid/binding edit so the value being typed is
+            // pushed to the row before we evaluate IsDirty.
             metadataGridView.EndEdit();
-            DialogResult = DialogResult.OK;
-            Close();
+
+            List<MetadataElementRow> dirtyRows = new List<MetadataElementRow>();
+
+            foreach (MetadataElementRow row in _rows)
+            {
+                if (row.IsDirty)
+                {
+                    dirtyRows.Add(row);
+                }
+            }
+
+            if (dirtyRows.Count == 0)
+            {
+                MessageBox.Show(
+                    "No hay cambios pendientes para guardar.",
+                    "Addino",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            int successCount = 0;
+            List<string> failures = new List<string>();
+
+            foreach (MetadataElementRow row in dirtyRows)
+            {
+                EA.Element element;
+
+                try
+                {
+                    element = _repository.GetElementByID(row.ElementId);
+                }
+                catch (Exception ex)
+                {
+                    failures.Add(
+                        $"Elemento ID {row.ElementId} ({row.Name}): no se pudo recuperar del repositorio. {ex.Message}");
+
+                    continue;
+                }
+
+                if (element == null)
+                {
+                    failures.Add(
+                        $"Elemento ID {row.ElementId} ({row.Name}): no se encontró en el repositorio.");
+
+                    continue;
+                }
+
+                try
+                {
+                    element.Name = row.Name ?? string.Empty;
+                    element.Alias = row.Alias ?? string.Empty;
+                    element.Notes = row.Notes ?? string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    failures.Add(
+                        $"Elemento ID {row.ElementId} ({row.Name}): error al asignar campos. {ex.Message}");
+
+                    continue;
+                }
+
+                bool updated;
+
+                try
+                {
+                    updated = element.Update();
+                }
+                catch (Exception ex)
+                {
+                    failures.Add(
+                        $"Elemento ID {row.ElementId} ({row.Name}): error de COM/E-A al guardar. {ex.Message}");
+
+                    continue;
+                }
+
+                if (!updated)
+                {
+                    failures.Add(
+                        $"Elemento ID {row.ElementId} ({row.Name}): no se pudo guardar. El elemento puede estar bloqueado o no permitir escritura.");
+
+                    continue;
+                }
+
+                // Only successful updates clear the pending/dirty state.
+                row.AcceptChanges();
+                successCount++;
+            }
+
+            ShowSaveResult(successCount, failures);
+        }
+
+        private void ShowSaveResult(int successCount, List<string> failures)
+        {
+            if (failures.Count == 0)
+            {
+                MessageBox.Show(
+                    $"Se guardaron correctamente los cambios de {successCount} elemento(s).",
+                    "Addino",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            StringBuilder message = new StringBuilder();
+            message.AppendLine("Algunos cambios no se pudieron guardar:");
+            message.AppendLine();
+
+            foreach (string failure in failures)
+            {
+                message.AppendLine($"• {failure}");
+            }
+
+            if (successCount > 0)
+            {
+                message.AppendLine();
+                message.AppendLine($"Elementos guardados correctamente: {successCount}.");
+            }
+
+            MessageBox.Show(
+                message.ToString(),
+                "Addino",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
         }
 
         private void CancelarButton_Click(object sender, EventArgs e)

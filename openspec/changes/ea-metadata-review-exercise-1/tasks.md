@@ -41,10 +41,10 @@ Chain strategy: size-exception
 
 ## Phase 3: Save & Error Handling
 
-- [ ] 3.1 `MetadataReviewForm.cs`: end edit, iterate only dirty rows. Verify: no-changes message when clean.
-- [ ] 3.2 `MetadataReviewForm.cs`: per dirty row get element by ID, set fields, `Update()`, continue on fail. Verify: failures identified.
-- [ ] 3.3 `MetadataReviewForm.cs`: `AcceptChanges()` on success, keep values on failure, Spanish summary. Verify: success/no-changes/partial messages.
-- [ ] 3.4 `MetadataReviewForm.cs`: zero dirty rows: no `Update()`, no pending changes. Verify: repeated Save no-op.
+- [x] 3.1 `MetadataReviewForm.cs`: end edit, iterate only dirty rows. Verify: no-changes message when clean.
+- [x] 3.2 `MetadataReviewForm.cs`: per dirty row get element by ID, set fields, `Update()`, continue on fail. Verify: failures identified.
+- [x] 3.3 `MetadataReviewForm.cs`: `AcceptChanges()` on success, keep values on failure, Spanish summary. Verify: success/no-changes/partial messages.
+- [x] 3.4 `MetadataReviewForm.cs`: zero dirty rows: no `Update()`, no pending changes. Verify: repeated Save no-op.
 
 ## Phase 4: Delivery Docs & Manual Validation
 

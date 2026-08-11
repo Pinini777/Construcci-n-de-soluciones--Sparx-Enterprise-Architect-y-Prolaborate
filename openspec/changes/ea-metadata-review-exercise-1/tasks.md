@@ -34,10 +34,10 @@ Chain strategy: size-exception
 
 ## Phase 2: Core UI
 
-- [ ] 2.1 `MetadataReviewForm.cs`, `.Designer.cs`: modal Spanish grid, Save/Cancel. Needs: 1.3-1.5. Verify: opens modally.
-- [ ] 2.2 `MetadataReviewForm.cs`, `.Designer.cs`: bind rows; Name/Alias editable, Notes multiline, Type/Stereotype readonly. Verify: editability rules.
-- [ ] 2.3 `MetadataReviewForm.cs`: end edit on Save; no `AcceptButton`. Verify: Enter in Notes, Save includes active value.
-- [ ] 2.4 `MetadataReviewForm.cs`: Cancel/Esc/X discard local changes without `Update()`. Verify: EA unchanged.
+- [x] 2.1 `MetadataReviewForm.cs`, `.Designer.cs`: modal Spanish grid, Save/Cancel. Needs: 1.3-1.5. Verify: opens modally.
+- [x] 2.2 `MetadataReviewForm.cs`, `.Designer.cs`: bind rows; Name/Alias editable, Notes multiline, Type/Stereotype readonly. Verify: editability rules.
+- [x] 2.3 `MetadataReviewForm.cs`: end edit on Save; no `AcceptButton`. Verify: Enter in Notes, Save includes active value.
+- [x] 2.4 `MetadataReviewForm.cs`: Cancel/Esc/X discard local changes without `Update()`. Verify: EA unchanged.
 
 ## Phase 3: Save & Error Handling
 

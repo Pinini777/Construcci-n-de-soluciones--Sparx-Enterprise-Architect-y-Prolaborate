@@ -78,6 +78,7 @@ namespace Addino
             this.Name = "MetadataReviewForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Revisión de Metadatos";
+            this.CancelButton = this.cancelarButton;
             ((System.ComponentModel.ISupportInitialize)(this.metadataGridView)).EndInit();
             this.buttonPanel.ResumeLayout(false);
             this.buttonPanel.PerformLayout();

@@ -26,11 +26,11 @@ Chain strategy: size-exception
 
 ## Phase 1: Foundation
 
-- [ ] 1.1 `AddinoClass.cs`: replace menus with `MenuReview`; keep 5 callbacks. Verify: only review action, builds.
-- [ ] 1.2 `AddinoClass.cs`: validate `EA.Package`; Spanish message otherwise. Verify: non-package stops.
-- [ ] 1.3 `MetadataElementRow.cs`: identity, editable fields, originals, `IsDirty`, `AcceptChanges()`. Verify: dirty/reset.
-- [ ] 1.4 `Addino.csproj`, `Addino.sln`: add `Compile`, create solution. Verify: x64 MSBuild.
-- [ ] 1.5 `AddinoClass.cs`, `MetadataElementRow.cs`: load ONLY direct `EA.Package.Elements` (no subpackages/recursion); COM-free row per child with `ElementId`, `Name`, `Alias`, `Notes`, `Type`, `Stereotype`; collection before form; empty ok; Spanish handling, no leak. Needs: 1.2, 1.3. Verify: direct-only, empty grid, errors handled.
+- [x] 1.1 `AddinoClass.cs`: replace menus with `MenuReview`; keep 5 callbacks. Verify: only review action, builds.
+- [x] 1.2 `AddinoClass.cs`: validate `EA.Package`; Spanish message otherwise. Verify: non-package stops.
+- [x] 1.3 `MetadataElementRow.cs`: identity, editable fields, originals, `IsDirty`, `AcceptChanges()`. Verify: dirty/reset.
+- [x] 1.4 `Addino.csproj`, `Addino.sln`: add `Compile`, create solution. Verify: x64 MSBuild.
+- [x] 1.5 `AddinoClass.cs`, `MetadataElementRow.cs`: load ONLY direct `EA.Package.Elements` (no subpackages/recursion); COM-free row per child with `ElementId`, `Name`, `Alias`, `Notes`, `Type`, `Stereotype`; collection before form; empty ok; Spanish handling, no leak. Needs: 1.2, 1.3. Verify: direct-only, empty grid, errors handled.
 
 ## Phase 2: Core UI
 

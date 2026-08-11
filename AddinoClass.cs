@@ -125,8 +125,10 @@ namespace Addino
                     MessageBoxIcon.Warning);
             }
 
-            // Phase 2: abrir MetadataReviewForm con repository y rows.
-            // La colección está completamente preparada localmente para la siguiente unidad de trabajo.
+            using (MetadataReviewForm form = new MetadataReviewForm(repository, rows))
+            {
+                form.ShowDialog();
+            }
         }
 
 

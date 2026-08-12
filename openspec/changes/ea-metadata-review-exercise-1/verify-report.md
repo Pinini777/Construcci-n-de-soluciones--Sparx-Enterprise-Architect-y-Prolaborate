@@ -1,17 +1,17 @@
 ```yaml
 schema: gentle-ai.verify-result/v1
-evidence_revision: sha256:89620a27e79a061ce04268d041c6b5618c68d861ea9a7b2cd575aced6a05dbae
+evidence_revision: sha256:65606c3efe32697ab85c2a85735d3d041d0ffe147f882a70a65eef95768928cf
 verdict: pass
 blockers: 0
 critical_findings: 0
-requirements: 10/10
-scenarios: 14/14
+requirements: 0/0
+scenarios: 0/0
 test_command: git diff --check
 test_exit_code: 0
 test_output_hash: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 build_command: msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64
 build_exit_code: 0
-build_output_hash: sha256:0fdaed4c1c0c5e0191df71f830bef2eec7e58af44e66f1949350f7e0f3db31c1
+build_output_hash: sha256:ad0ead0f8b451ece5ef5caf035216edfae32d8c2bf26599400b093cc8d75437b
 ```
 
 ## Verification Report
@@ -19,26 +19,37 @@ build_output_hash: sha256:0fdaed4c1c0c5e0191df71f830bef2eec7e58af44e66f1949350f7
 **Change**: ea-metadata-review-exercise-1  
 **Version**: N/A  
 **Mode**: Standard independent final verification  
-**Runtime/model**: OpenCode phase runtime; OpenAI `openai/gpt-5.6-sol`  
-**Scope**: Exercise 1 mandatory challenge requirements and approved SDD artifacts only
+**Runtime/model**: OpenAI `openai/gpt-5.6-sol`
+**Attempt context**: Operator-opened Attempt 12, token `sha256:a2d964a9c3cdb431d1b4cf6eca7b250cf4019fa7e11bab47398e2f4026047b6a`
 
 ### Verdict
 
 **PASS**
 
-All mandatory Exercise 1 requirements are implemented and backed by current source, a successful Debug|x64 build, readable delivery documents, and current human functional evidence. The live-EA negative paths for a locked/unwritable element, `Element.Update() == false`, and a COM exception were not dynamically forced; the source implements independent continuation and aggregate reporting, and this is classified as unavailable dynamic evidence and residual risk rather than a mandatory challenge failure.
+Fresh verification found no mandatory Exercise 1 failure. Current source, delivery artifacts, human EA evidence, a successful Debug|x64 build, and repository integrity support the implementation. The locked/unwritable, `Element.Update() == false`, and COM-exception paths were not dynamically forced and remain documented residual risk, not executed proof.
+
+### Native Structural Totals
+
+All active delta specs were counted with the required exact heading expressions:
+
+- Requirements: `^### (?:Requirement|REQ-[0-9]+):\s+\S` → **0**
+- Scenarios: `^#### Scenario:\s+\S` → **0**
+
+The current delta spec uses legacy unprefixed `###` requirement headings and bullet-form scenarios. Its ten semantic requirements and fourteen behavioral statements were reviewed for implementation and evidence, but they are not included in the native `0/0` and `0/0` envelope totals.
 
 ### Completeness
 
 | Metric | Value |
 |---|---:|
-| Spec requirements | 10 |
-| Spec scenarios | 14 |
-| Scenarios compliant with the mandatory challenge contract | 14 |
-| Scenarios with unavailable supplemental negative dynamic evidence | 1 |
+| Active delta spec files | 1 |
+| Native structured requirements | 0 |
+| Native structured scenarios | 0 |
+| Legacy semantic requirements reviewed | 10 |
+| Legacy behavioral statements reviewed | 14 |
 | Tasks total | 18 |
-| Tasks checked and substantively backed | 18 |
-| Mandatory requirements unmet | 0 |
+| Tasks complete | 18 |
+| Tasks incomplete | 0 |
+| Mandatory challenge requirements unmet | 0 |
 
 ### Build and Integrity Execution
 
@@ -47,7 +58,7 @@ All mandatory Exercise 1 requirements are implemented and backed by current sour
 ```text
 Command: msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64
 Exit code: 0
-Output hash (exact captured UTF-8 output): sha256:0fdaed4c1c0c5e0191df71f830bef2eec7e58af44e66f1949350f7e0f3db31c1
+Output hash (exact captured UTF-8 bytes): sha256:ad0ead0f8b451ece5ef5caf035216edfae32d8c2bf26599400b093cc8d75437b
 Result: MSBuild 18.8.2; Addino -> bin\x64\Debug\Addino.dll; build succeeded; 0 warnings; 0 errors.
 ```
 
@@ -60,105 +71,98 @@ Output: empty
 Output hash: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 ```
 
-**Automated tests / coverage**: Not available. `openspec/config.yaml` records no test runner, test project, runtime harness, or coverage command and `strict_tdd: false`. Current human EA execution evidence is therefore used for the challenge's functional scenarios; source inspection is not represented as execution of the three unavailable negative dynamic paths.
+**Automated tests / coverage**: Not available. `openspec/config.yaml` records no test runner, runtime harness, or coverage command and `strict_tdd: false`. Runtime compliance therefore relies on the current human Enterprise Architect evidence for exercised flows. Static source inspection is not represented as execution of unavailable negative paths.
 
-### Spec Compliance Matrix
+### Behavioral Compliance Matrix
 
-| # | Requirement | Scenario | Current evidence | Result |
+| # | Requirement | Behavioral statement | Current runtime/static evidence | Result |
 |---:|---|---|---|---|
-| 1 | EA callbacks and Extensions action | Add-in loads | Five current callbacks in `AddinoClass.cs`; PF-01 screenshot/result in functional-evidence PDF | COMPLIANT |
-| 2 | Package selection validation | Valid package selection | Strict item-type/object/cast flow; PF-03 and guide evidence show package flow and editor | COMPLIANT |
-| 3 | Package selection validation | Invalid selection | Spanish guard in source; PF-02 documents no selection and selected-element rejection without editor | COMPLIANT |
-| 4 | Direct element loading | Package with direct elements | Only `package.Elements` is enumerated; PF-03 screenshot/result compares direct rows and excludes recursion | COMPLIANT |
-| 5 | Direct element loading | Empty package | Empty `BindingList` path; PF-03 includes a readable empty-grid capture and successful result | COMPLIANT |
-| 6 | Grid editability | Allowed edits | DTO/BindingList and sole Save-time `Update()` call; PF-04/PF-05 show editable Name/Alias/Notes, readonly Type/Stereotype, multiline Notes | COMPLIANT |
-| 7 | Modality and Spanish UI | Modal Spanish editor | `ShowDialog()` plus Spanish form/labels/messages; guide identifies modal behavior | COMPLIANT |
-| 8 | Local edit lifecycle | Cancel lifecycle | No close-time persistence path; `CancelButton` handles Escape; PF-06 and PF-10 document Cancel/Escape/X discard and saved-state preservation | COMPLIANT |
-| 9 | Save lifecycle | Normal save | Active edit ends before dirty evaluation; dirty rows resolve by ElementId and call `Update()`; PF-07/PF-09 show success and EA reflection | COMPLIANT |
-| 10 | Save lifecycle | Failures continue | Per-row lookup/assignment/false/exception branches continue and retain failed baselines; locked/false/COM paths were not dynamically forced | DYNAMIC EVIDENCE UNAVAILABLE — RESIDUAL RISK |
-| 11 | Save lifecycle | No new changes | Clean early return before `Update()`; PF-08 documents initial and repeated unchanged Save | COMPLIANT |
-| 12 | Target platform and solution | Baseline verification | Current build passed; project targets .NET Framework 4.7.2, WinForms, Interop.EA, COM registration, C# 7.3 and x64 | COMPLIANT |
-| 13 | Delivery artifacts | Delivery verification | `.sln`, README, three surname-prefixed PDFs, functional screenshots, 3:16 MP4, and eight traceable IA interactions are physically present/readable as applicable | COMPLIANT |
-| 14 | Excluded optional work | No optional features | Current source contains no recursion, add/reload controls, dirty-row highlighting, or empty-Name blocker | COMPLIANT |
+| 1 | EA callbacks and Extensions action | Add-in loads | Five callbacks in `AddinoClass.cs`; PF-01 EA screenshot/result | COMPLIANT |
+| 2 | Package selection validation | Valid package selection | Strict type/object/cast flow; PF-03 and guide evidence | COMPLIANT |
+| 3 | Package selection validation | Invalid selection | Spanish guard; PF-02 EA evidence shows editor remains closed | COMPLIANT |
+| 4 | Direct element loading | Package with direct elements | `package.Elements` only; PF-03 compares direct rows | COMPLIANT |
+| 5 | Direct element loading | Empty package | Empty `BindingList`; PF-03 empty-grid evidence | COMPLIANT |
+| 6 | Grid editability | Allowed edits | DTO binding and Save-only update; PF-04/PF-05 | COMPLIANT |
+| 7 | Modality and Spanish UI | Modal Spanish editor | `ShowDialog()` and Spanish UI; guide evidence | COMPLIANT |
+| 8 | Local edit lifecycle | Cancel lifecycle | No close-time persistence; PF-06/PF-10 cover Cancel, Escape, and X | COMPLIANT |
+| 9 | Save lifecycle | Normal save | Active edit completion and dirty-row update; PF-07/PF-09 | COMPLIANT |
+| 10 | Save lifecycle | Failures continue | Independent false/exception/unwritable branches exist; no live fault forcing | RESIDUAL RISK — NOT EXECUTED PROOF |
+| 11 | Save lifecycle | No new changes | Clean early return; PF-08 repeated unchanged Save | COMPLIANT |
+| 12 | Target platform and solution | Baseline verification | Fresh Debug|x64 build; .NET Framework 4.7.2, WinForms, Interop.EA, COM, C# 7.3 | COMPLIANT |
+| 13 | Delivery artifacts | Delivery verification | `.sln`, README, three readable surname PDFs, screenshots, 3:16 MP4, eight IA interactions | COMPLIANT |
+| 14 | Excluded optional work | No optional features | No recursion, creation, reload, dirty highlighting, or empty-Name blocker | COMPLIANT |
 
-**Compliance summary**: 14/14 scenarios comply with the mandatory Exercise 1 contract. The failure-continuation scenario is compliant because the required control behavior is present for false/exception/unwritable outcomes and the original challenge does not require destructive fault injection; supplemental live-EA execution of those negative branches remains unavailable and is retained as residual risk rather than represented as executed proof.
+The matrix is a review of legacy behavioral statements and challenge obligations; it does not alter the authoritative native scenario total of zero.
 
-### Correctness and Challenge Compliance
+### Correctness and Mandatory Compliance
 
 | Focus | Status | Evidence |
 |---|---|---|
-| .NET Framework 4.7.2, WinForms, Interop.EA/COM, x64 | Met | `Addino.csproj`, `AssemblyInfo.cs`, current Debug|x64 build |
-| Five EA callbacks and one enabled action | Met | `AddinoClass.cs` |
-| Strict `EA.Package` selection | Met | Type check precedes object retrieval and cast |
-| Direct package elements only | Met | Only `EA.Package.Elements`; no recursive/subpackage traversal |
-| Columns and editability | Met | Name/Alias/Notes editable; Type/Stereotype readonly; screenshots corroborate |
-| In-memory editing | Met | COM-free `MetadataElementRow` instances in `BindingList`; sole `Update()` is Save path |
-| Explicit Save persistence | Met | Dirty-only per-row `Element.Update()` with successful baseline acceptance |
-| Cancel/Escape/X discard | Met | No close persistence; form CancelButton and current PF-06/PF-10 evidence |
-| Failure continuation and aggregate result | Met statically | False/exception/retrieval/assignment failures append row details and continue; successes become clean |
-| README/guide reproducibility | Met | Prerequisites, build, COM registration, EA opening, package/menu path, editing, Save/cancel, errors, and persistence verification |
-| IA log | Met | Eight genuine identified interactions (`DOC-001..003`, `DES-001..005`) with objective, tool/model, prompt/strategy, decision/evidence, and result across MD/PDF |
-| Human functional evidence | Met | Functional-evidence PDF has ten tests and readable captures; video file is present as a 205,348,452-byte, 3:16 MP4 |
-| Optional features excluded | Met | Recursion, dirty highlighting, empty-Name validation, Reload, and element creation remain out of scope and absent |
+| Platform and integration baseline | Met | Fresh build; project and COM configuration |
+| Five EA callbacks and enabled action | Met | Current `AddinoClass.cs` |
+| Strict package validation and direct loading | Met | Type check, safe cast, `package.Elements` only |
+| Editable and read-only column contract | Met | Current grid configuration and PF-04/PF-05 |
+| Local editing and explicit persistence | Met | COM-free row DTO; sole `Update()` call is in Save |
+| Cancel/Escape/X behavior | Met | Current form wiring and PF-06/PF-10 |
+| Dirty-only save and successful baseline acceptance | Met | Current Save loop and `AcceptChanges()` |
+| Human delivery evidence | Met | Ten-test functional PDF and physical MP4 |
+| AI usage traceability | Met | Eight identified interactions with required fields |
+| Optional features excluded | Met | Source and delivery documentation |
 
 ### Delivery Evidence Inspection
 
-| Artifact | Physical/readability result | SHA-256 |
+| Artifact | Fresh inspection | SHA-256 |
 |---|---|---|
-| `docs/delivery/Pino_Evidencias_Pruebas_Funcionales_Addino.pdf` | Readable 10-page document with PF-01..PF-10 and embedded captures for menu, invalid selection, empty/populated grids, editing, multiline Notes, Save/no-change messages, and EA-reflected persisted value | `11e289ccf672f7e1f5dcb58638f0f30cf8c456259cbcf5bfb1615d9c1ea6ca12` |
-| `docs/delivery/Pino_Guia_Ejecucion_Addino.pdf` | Readable 18-page execution guide; one informational placeholder `LINK VIDEO` remains, but the local video is physically supplied | `28a37134bde53fc567ea5064f74254356b47f3b8cb0c7315d367a49466139a13` |
-| `docs/delivery/Pino_Registro_Uso_IA.pdf` | Readable 13-page IA register with screenshots, IDs, prompts, model/tool labels, evidence, and results | `1e3580308037a07d83928a54bfde3d2d325047e1635d40c5eb15d15c123e91b5` |
-| `docs/evidence/Test de Ejecucion 1.mp4` | Physical MP4 is readable by Windows metadata: 205,348,452 bytes, duration 00:03:16, perceived type Video, not protected. This runtime had no ffprobe/decoder, so its frames/audio were not semantically inspected and no unobserved content is claimed | `5679a1379b6fe7fce21ac38f5ac526e4a53295f6041400b786fe942686c2d55e` |
+| `docs/delivery/Pino_Evidencias_Pruebas_Funcionales_Addino.pdf` | Readable 10-page PF-01..PF-10 document with embedded EA captures | `11e289ccf672f7e1f5dcb58638f0f30cf8c456259cbcf5bfb1615d9c1ea6ca12` |
+| `docs/delivery/Pino_Guia_Ejecucion_Addino.pdf` | Readable 18-page guide; informational `LINK VIDEO` placeholder remains | `28a37134bde53fc567ea5064f74254356b47f3b8cb0c7315d367a49466139a13` |
+| `docs/delivery/Pino_Registro_Uso_IA.pdf` | Readable 13-page IA register with prompts, evidence, and outcomes | `1e3580308037a07d83928a54bfde3d2d325047e1635d40c5eb15d15c123e91b5` |
+| `docs/evidence/Test de Ejecucion 1.mp4` | Physical file present; 205,348,452 bytes; Windows metadata reports Video, 00:03:16, not protected. Frames/audio were not semantically decoded | `5679a1379b6fe7fce21ac38f5ac526e4a53295f6041400b786fe942686c2d55e` |
 
-The original challenge requires screenshots **or** a short video. The readable functional-evidence PDF independently contains screenshots covering the complete required selection/edit/save/EA-impact flow; therefore inability to decode the MP4 in this verifier runtime does not create a mandatory evidence failure.
+The original challenge accepts screenshots or a short video. The functional-evidence PDF independently contains readable screenshots of selection, editing, Save, and reflected EA impact.
 
 ### Design Coherence and Task Backing
 
 | Decision/task group | Status | Notes |
 |---|---|---|
-| Callback class + modal form + local DTO | Coherent | Matches approved proportional architecture |
-| Stable ElementId, no bound COM element | Coherent | DTO keeps scalar state and identity only |
+| Callback class + modal form + local DTO | Coherent | Matches the approved proportional design |
+| Stable ElementId without bound COM element | Coherent | DTO stores scalar state and identity only |
 | Independent dirty-row saves | Coherent | Successes accept baseline; failures remain pending; loop continues |
-| Foundation tasks 1.1-1.5 | Backed | Source, project/solution, strict selection, direct loading, empty handling |
-| UI tasks 2.1-2.4 | Backed | Modal Spanish form, bindings/columns, active edit, Cancel/Escape/X evidence |
-| Save tasks 3.1-3.4 | Backed | Dirty filtering, per-row update, aggregate messages, repeated no-change evidence |
-| Delivery tasks 4.1-4.5 | Backed | README, IA log, EA 17.1 x64 PF evidence, surname artifacts, screenshots, and physical video |
+| Foundation tasks 1.1-1.5 | Backed | Current source, project, solution, and build |
+| UI tasks 2.1-2.4 | Backed | Current form plus PF-03..PF-06/PF-10 |
+| Save tasks 3.1-3.4 | Backed | Current save flow plus PF-07..PF-09 |
+| Delivery tasks 4.1-4.5 | Backed | README, IA log, PDFs, screenshots, and physical video |
 
-No current material contradiction was found across source, approved artifacts, README, IA log, and evidence. Task 4.3 explicitly records the unavailable forced failure paths as a verification limitation, consistently with current evidence.
+No implementation or approved-artifact change occurred after the prior PASS commit: current `HEAD` is `9341e0042459e1b7e5ebc50e73033d46d6e5ad34`, that commit changed only the prior `verify-report.md`, and the implementation/artifact paths have no working-tree diff. The unrelated untracked `.codegraph/` directory was present during verification and is outside the change evidence.
 
-### Required Classification
+### Issues Found
 
-**Mandatory requirement met**
+**CRITICAL**: None.
 
-- All mandatory Exercise 1 challenge requirements and all ten approved capability requirements.
-- All 18 task checkboxes are backed by implementation or current delivery/runtime evidence.
+**WARNING**:
 
-**Mandatory requirement unmet**
+- The active delta spec has zero headings matching the mandated native requirement/scenario syntax; its legacy semantic content was reviewed separately and cannot be counted in the strict envelope.
+- Locked/unwritable, `Element.Update() == false`, and COM-exception Save paths were not dynamically forced. Their handling is statically present, but environment-specific behavior remains residual risk.
+- The MP4 was physically and metadata-inspected but not semantically decoded in this runtime.
 
-- None.
+**SUGGESTION**:
 
-**Dynamic evidence unavailable**
-
-- A genuinely locked/unwritable EA element.
-- A real `Element.Update() == false` return.
-- A forced Enterprise Architect/COM exception during Save.
-
-**Residual risk**
-
-- The three negative paths above are supported by source but were not executed in live EA; an environment-specific COM/locking behavior could still differ from the static control flow.
-- The current MP4 could not be semantically decoded in this verifier runtime; its physical validity and metadata were inspected, while the complete required visual flow is independently shown by readable PDF captures.
-
-**Informational observations**
-
-- `WarningLevel` is `0` for Debug|x64, so the reported zero warnings are under a configuration that suppresses compiler warnings; the successful build remains valid.
-- The guide PDF and README retain a future-link placeholder, although the full local MP4 is present. The original challenge permits local evidence and does not require a public URL.
-- The ignored status of formal PDFs/video is transport policy, not absence; physical presence/readability was assessed directly.
+- Normalize requirement/scenario headings in a future, separately authorized planning change; verification did not modify frozen artifacts.
 
 ### Evidence Revision
 
-The `evidence_revision` is the SHA-256 of the exact UTF-8 manifest below (LF-delimited with final LF):
+The new `evidence_revision` is the SHA-256 of the exact UTF-8 manifest below, LF-delimited with a final LF. It binds Attempt 12 context, current HEAD, authoritative structural totals, fresh command outcomes, and current evidence hashes.
 
 ```text
+attempt_token	sha256:a2d964a9c3cdb431d1b4cf6eca7b250cf4019fa7e11bab47398e2f4026047b6a
+head	9341e0042459e1b7e5ebc50e73033d46d6e5ad34
+structural_requirements	0
+structural_scenarios	0
+build_command	msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64
+build_exit_code	0
+build_output_hash	sha256:ad0ead0f8b451ece5ef5caf035216edfae32d8c2bf26599400b093cc8d75437b
+test_command	git diff --check
+test_exit_code	0
+test_output_hash	sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 Addino.csproj	e75b81f2ed2be2b750ed0e263a2e19aa7d2064fd1690c9542d7364eb22e2ff39
 Addino.sln	f3e5d925b2039fbbb55b90e231e545347e4bad20f899f5c978f76f6fd4a71ef3
 AddinoClass.cs	aceb165683f3c3310d3f34ac7cb321db6d5f88f938a723699fa0d335824be9ca
@@ -178,8 +182,8 @@ openspec\changes\ea-metadata-review-exercise-1\design.md	226f55467433391f37cd485
 openspec\changes\ea-metadata-review-exercise-1\tasks.md	100d44d1c1b61842711c11de78f8d7865ea1c579146870a34c9ad95c33b83bbe
 ```
 
-Manifest hash: `sha256:89620a27e79a061ce04268d041c6b5618c68d861ea9a7b2cd575aced6a05dbae`.
+Manifest hash: `sha256:65606c3efe32697ab85c2a85735d3d041d0ffe147f882a70a65eef95768928cf`.
 
 ### Final State
 
-**PASS** — no mandatory Exercise 1 requirement is unmet. Attempt 11 remains running and is reserved for operator closure; verification performed no attempt lifecycle command and did not apply, archive, or alter implementation/approved decisions.
+**PASS** — native structural totals are 0/0 requirements and 0/0 scenarios under the mandated regexes; all 18 tasks remain complete, fresh build and integrity checks pass, mandatory challenge evidence remains supported, and unavailable negative dynamic paths remain explicitly classified as residual risk rather than executed proof.

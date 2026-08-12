@@ -7,3 +7,6 @@ obj/
 .atl/
 # Local reference material
 docs/source_material/
+docs/evidence/*.mp4
+docs/delivery/Pino_Guia_Ejecucion_Addino.pdf
+docs/delivery/Pino_Registro_Uso_IA.pdf

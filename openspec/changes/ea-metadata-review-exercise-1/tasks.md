@@ -48,8 +48,11 @@ Chain strategy: size-exception
 
 ## Phase 4: Delivery Docs & Manual Validation
 
-- [ ] 4.1 `README.md`: Spanish README: prerequisites, EA opening, selection, menu path, edit/save/cancel, validation, persist check. Verify: sections present.
-- [ ] 4.2 `AI_USAGE_LOG.md`: ≥5 rows incl. `Update() == false`. Verify: required fields.
-- [ ] 4.3 EA: `Debug|x64` build, COM registration, 10 checks. Needs: 3.3, 2.4. Verify: checklist complete.
-- [ ] 4.4 `README.md`/notes: surname packaging; keep `Addino` names. Verify: strategy written.
-- [ ] 4.5 Evidence: screenshots + video of selection → grid → edit → Save → EA reflection. No auto/synthesis. Needs: 4.3. Verify: actual evidence exists — existing screenshots and short video show package selection → grid open → edit → Save → change reflected in EA.
+- [x] 4.1 `README.md`: Spanish README: prerequisites, EA opening, selection, menu path, edit/save/cancel, validation, persist check. Verify: sections present.
+- [x] 4.2 `AI_USAGE_LOG.md`: ≥5 rows incl. `Update() == false`. Verify: required fields.
+- [x] 4.3 EA: `Debug|x64` build, COM registration, manual validation checklist. Needs: 3.3, 2.4. Verify: reproducible runtime scenarios completed.
+  - **Validation result**: build `Debug|x64`, COM/add-in loading, menu availability, invalid selection, valid package, direct-element loading, empty package, column permissions, multiline Notes, Cancel/Esc/X safety, successful Save, Save with no pending changes, persistence reflection, and preservation of the last saved state were validated manually in Enterprise Architect 17.1 x64.
+  - **Known verification limitation**: a genuinely locked/unwritable element, a real `Element.Update() == false` result, and a COM exception could not be reproduced safely in the available EA repository. The implementation contains explicit handling for these paths, but they remain unvalidated in live EA and MUST be assessed as a residual verification risk during `sdd-verify`. but the required locked-element / `Update() == false` / exception scenarios lack real EA proof. Implementation and static coverage exist; task remains open until live EA validates those scenarios or they are explicitly accepted as unvalidated.
+- [x] 4.4 `README.md`/notes: surname packaging; keep `Addino` names. Verify: strategy written.
+- [x] 4.5 Evidence: screenshots + video of selection → grid → edit → Save → EA reflection. No auto/synthesis. Needs: 4.3. Verify: actual evidence exists — screenshots are documented in `Pino_Evidencias_Pruebas_Funcionales_Addino.pdf` and a real full-flow video has been recorded. Final external video link will be added before delivery.
+  - **Pending note**: no screenshots or video files have been created. README contains naming guidance and capture instructions for the final evidence, but task 4.5 must remain unchecked until actual media exist.

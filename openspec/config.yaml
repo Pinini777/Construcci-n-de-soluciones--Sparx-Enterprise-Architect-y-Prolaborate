@@ -1,14 +1,25 @@
 schema: spec-driven
 
 context: |
-  Project: Addino Enterprise Architect add-in.
-  Stack: C# class library targeting .NET Framework 4.7.2, built with MSBuild/Visual Studio.
-  Architecture: COM-visible Enterprise Architect SDK callback class using Interop.EA.
-  Platform: x64 configurations with COM interop registration enabled for Debug builds.
-  Testing: No test runner or test projects detected; strict TDD is disabled.
-  Style: Existing legacy csproj, explicit compile items, four-space C# indentation, English identifiers.
+  Project: Proagile 2026 multi-exercise technical challenge workspace.
+  Scope: `Exercise_2_queries/` is the active area for `ea-governance-queries-exercise-2`.
+  Historical component: `Addino/` is the completed, verified, and archived Exercise 1
+  C#/.NET Framework 4.7.2 add-in; it is outside the Exercise 2 scope and must not be modified.
+  Stack for Exercise 2: SQL queries over an Enterprise Architect repository; read-only SQLite
+  inspection of the QEA repository; Enterprise Architect SQL/Search for final execution and
+  validation; Markdown documentation and manual evidence. Prolaborate V5 is optional and deferred.
+  Validation: SELECT/read-only queries, query execution, manual comparison with visible EA model
+  content, and captured evidence. Never use UPDATE, INSERT, or DELETE against the QEA repository.
+  Testing: No automated build or test runner applies to Exercise 2; strict TDD is disabled.
 
 strict_tdd: false
+
+sdd:
+  initialized_change: ea-governance-queries-exercise-2
+  artifact_store: hybrid
+  delivery_strategy: ask-on-risk
+  review_budget_lines: 400
+  next_recommended: sdd-new
 
 testing:
   test_runner:
@@ -33,8 +44,8 @@ testing:
       available: false
       command: ""
   build:
-    available: true
-    command: 'msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64'
+    available: false
+    command: ""
 
 rules:
   proposal:
@@ -50,6 +61,10 @@ rules:
     test_command: ""
   verify:
     test_command: ""
-    build_command: 'msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64'
+    build_command: ""
+    checks:
+      - Validate SELECT/read-only SQL query execution.
+      - Contrast query results with visible Enterprise Architect model content.
+      - Preserve manual execution evidence; never mutate the QEA repository.
   archive:
     - Warn before merging destructive deltas.

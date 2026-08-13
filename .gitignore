@@ -3,10 +3,17 @@ bin/
 obj/
 *.user
 *.suo
-# Local AI runtime state
+# Local AI/runtime state
 .atl/
-# Local reference material
-docs/source_material/
-docs/evidence/*.mp4
-docs/delivery/Pino_Guia_Ejecucion_Addino.pdf
-docs/delivery/Pino_Registro_Uso_IA.pdf
+.codegraph/
+# Local Enterprise Architect repositories
+*.qea
+*.qeax
+*.eap
+*.eapx
+*.dea
+# Exercise 1 local reference/delivery artifacts
+Addino/docs/source_material/
+Addino/docs/evidence/*.mp4
+Addino/docs/delivery/Pino_Guia_Ejecucion_Addino.pdf
+Addino/docs/delivery/Pino_Registro_Uso_IA.pdf

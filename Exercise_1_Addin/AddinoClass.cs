@@ -5,6 +5,10 @@ using System.Windows.Forms;
 
 namespace Addino
 {
+    internal delegate BindingList<MetadataElementRow> PackageLoader(
+        EA.Package root,
+        out List<string> warnings);
+
     public class AddinoClass
     {
         private const string MenuHeader = "-&Addino";
@@ -101,7 +105,7 @@ namespace Addino
 
             try
             {
-                rows = LoadPackageElements(package, out warnings);
+                rows = LoadPackageTree(package, out warnings);
             }
             catch (Exception ex)
             {
@@ -125,77 +129,245 @@ namespace Addino
                     MessageBoxIcon.Warning);
             }
 
-            using (MetadataReviewForm form = new MetadataReviewForm(repository, rows))
+            using (MetadataReviewForm form = new MetadataReviewForm(
+                repository,
+                package,
+                LoadPackageTree,
+                rows))
             {
                 form.ShowDialog();
             }
         }
 
 
-        private BindingList<MetadataElementRow> LoadPackageElements(
-            EA.Package package,
+        internal static BindingList<MetadataElementRow> LoadPackageTree(
+            EA.Package root,
             out List<string> warnings)
         {
             warnings = new List<string>();
             BindingList<MetadataElementRow> rows = new BindingList<MetadataElementRow>();
 
-            if (package == null)
+            if (root == null)
             {
                 return rows;
             }
 
-            EA.Collection elements;
+            HashSet<int> visitedPackageIds = new HashSet<int>();
+            HashSet<int> emittedElementIds = new HashSet<int>();
+            Stack<PackageFrame> stack = new Stack<PackageFrame>();
 
-            try
+            stack.Push(new PackageFrame
             {
-                elements = package.Elements;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    "No se pudo acceder a la colección de elementos del paquete.",
-                    ex);
-            }
+                Package = root,
+                Path = SafePackageName(root)
+            });
 
-            if (elements == null)
+            while (stack.Count > 0)
             {
-                return rows;
-            }
+                PackageFrame frame = stack.Pop();
+                EA.Package package = frame.Package;
+                string path = frame.Path;
 
-            try
-            {
-                foreach (object elementObject in elements)
+                if (package == null)
                 {
-                    EA.Element element = elementObject as EA.Element;
-                    if (element == null)
+                    continue;
+                }
+
+                int packageId;
+
+                try
+                {
+                    packageId = package.PackageID;
+                }
+                catch (Exception ex)
+                {
+                    warnings.Add(
+                        $"No se pudo leer el identificador de un paquete en la rama '{path}': {ex.Message}; se omite la rama.");
+
+                    continue;
+                }
+
+                if (visitedPackageIds.Contains(packageId))
+                {
+                    warnings.Add(
+                        $"Paquete ID {packageId} ('{path}') ya fue procesado; se omite la rama para evitar ciclos.");
+
+                    continue;
+                }
+
+                visitedPackageIds.Add(packageId);
+
+                EA.Collection elements = null;
+
+                try
+                {
+                    elements = package.Elements;
+                }
+                catch (Exception ex)
+                {
+                    warnings.Add(
+                        $"No se pudieron leer los elementos del paquete '{path}' (ID {packageId}): {ex.Message}; se omite la rama.");
+
+                    continue;
+                }
+
+                if (elements != null)
+                {
+                    foreach (object elementObject in elements)
                     {
-                        continue;
+                        EA.Element element = null;
+
+                        try
+                        {
+                            element = elementObject as EA.Element;
+                        }
+                        catch
+                        {
+                            // Ignore cast failures and continue with the next item.
+                        }
+
+                        if (element == null)
+                        {
+                            continue;
+                        }
+
+                        int elementId;
+                        string elementName;
+                        string elementAlias;
+                        string elementNotes;
+                        string elementType;
+                        string elementStereotype;
+
+                        try
+                        {
+                            elementId = element.ElementID;
+                            elementName = element.Name;
+                            elementAlias = element.Alias;
+                            elementNotes = element.Notes;
+                            elementType = element.Type;
+                            elementStereotype = element.Stereotype;
+                        }
+                        catch (Exception ex)
+                        {
+                            warnings.Add(
+                                $"Elemento en paquete '{path}' (ID {packageId}): no se pudieron leer sus datos; se omite ({ex.Message}).");
+
+                            continue;
+                        }
+
+                        if (emittedElementIds.Contains(elementId))
+                        {
+                            continue;
+                        }
+
+                        emittedElementIds.Add(elementId);
+
+                        rows.Add(new MetadataElementRow(
+                            elementId,
+                            elementName ?? string.Empty,
+                            elementAlias ?? string.Empty,
+                            elementNotes ?? string.Empty,
+                            elementType ?? string.Empty,
+                            elementStereotype ?? string.Empty,
+                            path));
                     }
+                }
+
+                EA.Collection childPackages = null;
+
+                try
+                {
+                    childPackages = package.Packages;
+                }
+                catch (Exception ex)
+                {
+                    warnings.Add(
+                        $"No se pudieron leer los subpaquetes de '{path}' (ID {packageId}): {ex.Message}; se omite la rama.");
+
+                    continue;
+                }
+
+                if (childPackages == null)
+                {
+                    continue;
+                }
+
+                List<EA.Package> children = new List<EA.Package>();
+
+                foreach (object childObject in childPackages)
+                {
+                    EA.Package child = null;
 
                     try
                     {
-                        rows.Add(new MetadataElementRow(
-                            element.ElementID,
-                            element.Name,
-                            element.Alias,
-                            element.Notes,
-                            element.Type,
-                            element.Stereotype));
+                        child = childObject as EA.Package;
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        warnings.Add($"Elemento ID {element.ElementID}: {ex.Message}");
+                        // Ignore cast failures.
+                    }
+
+                    if (child != null)
+                    {
+                        children.Add(child);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    "No se pudo recorrer la colección de elementos del paquete.",
-                    ex);
+
+                for (int i = children.Count - 1; i >= 0; i--)
+                {
+                    EA.Package child = children[i];
+                    string childPath = BuildChildPath(path, SafePackageName(child));
+
+                    stack.Push(new PackageFrame
+                    {
+                        Package = child,
+                        Path = childPath
+                    });
+                }
             }
 
             return rows;
+        }
+
+
+        private static string SafePackageName(EA.Package package)
+        {
+            if (package == null)
+            {
+                return string.Empty;
+            }
+
+            try
+            {
+                return package.Name ?? string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+
+        private static string BuildChildPath(string parentPath, string childName)
+        {
+            if (string.IsNullOrEmpty(parentPath))
+            {
+                return childName ?? string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(childName))
+            {
+                return parentPath;
+            }
+
+            return parentPath + " / " + childName;
+        }
+
+
+        private struct PackageFrame
+        {
+            public EA.Package Package;
+            public string Path;
         }
 
 

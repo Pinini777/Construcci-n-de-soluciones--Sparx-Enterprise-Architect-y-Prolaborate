@@ -2,24 +2,22 @@ schema: spec-driven
 
 context: |
   Project: Proagile 2026 multi-exercise technical challenge workspace.
-  Scope: `Exercise_2_queries/` is the active area for `ea-governance-queries-exercise-2`.
-  Historical component: `Addino/` is the completed, verified, and archived Exercise 1
-  C#/.NET Framework 4.7.2 add-in; it is outside the Exercise 2 scope and must not be modified.
-  Stack for Exercise 2: SQL queries over an Enterprise Architect repository; read-only SQLite
-  inspection of the QEA repository; Enterprise Architect SQL/Search for final execution and
-  validation; Markdown documentation and manual evidence. Prolaborate V5 is optional and deferred.
-  Validation: SELECT/read-only queries, query execution, manual comparison with visible EA model
-  content, and captured evidence. Never use UPDATE, INSERT, or DELETE against the QEA repository.
-  Testing: No automated build or test runner applies to Exercise 2; strict TDD is disabled.
+  Delivery scope for the initialized independent change: `Exercise_1_Addin/`.
+  Exercise 1 is a C#/.NET Framework 4.7.2 Windows Forms COM add-in for Enterprise Architect,
+  built with a classic MSBuild project and validated through native compilation and manual EA
+  execution evidence. Exercise 2 remains a separate protected delivery scope.
+  Existing archived Exercise 1 and Exercise 2 changes are audit history and must not be modified.
+  Validation: x64 MSBuild compilation plus manual Enterprise Architect interaction and evidence;
+  no automated test project is present.
 
 strict_tdd: false
 
 sdd:
-  initialized_change: ea-governance-queries-exercise-2
+  initialized_change: ea-metadata-review-optionals-ui
   artifact_store: hybrid
   delivery_strategy: ask-on-risk
   review_budget_lines: 400
-  next_recommended: sdd-new
+  next_recommended: sdd-explore
 
 testing:
   test_runner:
@@ -44,8 +42,8 @@ testing:
       available: false
       command: ""
   build:
-    available: false
-    command: ""
+    available: true
+    command: 'MSBuild.exe Exercise_1_Addin\Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64'
 
 rules:
   proposal:
@@ -61,10 +59,10 @@ rules:
     test_command: ""
   verify:
     test_command: ""
-    build_command: ""
+    build_command: 'MSBuild.exe Exercise_1_Addin\Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64'
     checks:
-      - Validate SELECT/read-only SQL query execution.
-      - Contrast query results with visible Enterprise Architect model content.
-      - Preserve manual execution evidence; never mutate the QEA repository.
+      - Validate x64 MSBuild compilation of the Exercise 1 add-in.
+      - Validate optional behavior through manual Enterprise Architect execution evidence.
+      - Do not modify protected Exercise 2 or archived artifacts.
   archive:
     - Warn before merging destructive deltas.

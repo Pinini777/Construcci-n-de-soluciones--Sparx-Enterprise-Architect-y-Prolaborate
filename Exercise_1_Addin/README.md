@@ -1,402 +1,133 @@
-# Addino — Revisión de Metadatos para Enterprise Architect
+# Addino — Enterprise Architect Metadata Review
 
-**Addino** es un Add-in desarrollado en C# para Sparx Enterprise Architect como parte del Ejercicio 1 del Desafío Técnico de Práctica de Proagile 2026.
+Addino is a C# WinForms COM add-in for Sparx Enterprise Architect. It opens a modal metadata editor for the selected package, including all descendant packages, while keeping persistence explicit and row-based.
 
-Su objetivo es facilitar la revisión y actualización de los metadatos de los elementos contenidos en un paquete de Enterprise Architect mediante una grilla centralizada.
+## Environment
 
-Desde Addino es posible editar:
-
-- **Nombre**
-- **Alias**
-- **Notas**
-
-Mientras que los siguientes campos se muestran únicamente como información:
-
-- **Tipo**
-- **Estereotipo**
-
-Los cambios permanecen localmente en memoria hasta que el usuario presiona **Guardar**.
-
----
-
-## Tecnologías
-
-- C#
+- Windows x64
+- Sparx Enterprise Architect 17.1 x64 (validated environment)
 - .NET Framework 4.7.2
-- Windows Forms
-- Interop.EA
-- COM
-- Visual Studio
-- Enterprise Architect 17.1 x64
-- Git
+- Visual Studio or MSBuild with .NET Framework tooling
+- `Interop.EA.dll`
+- Permission to register the COM add-in when required
 
-La solución fue desarrollada y validada específicamente utilizando **Enterprise Architect 17.1 x64**.
+The project targets C# 7.3 and x64. It does not change the add-in class, assembly identity, GUID, COM registration model, or Enterprise Architect callbacks.
 
-La edición Trial de Enterprise Architect no constituye un requisito propio de Addino.
+## Build
 
----
-
-## Estructura principal
-
-```text
-Addino/
-├── docs/
-├── openspec/
-├── Addino.sln
-├── Addino.csproj
-├── AddinoClass.cs
-├── MetadataElementRow.cs
-├── MetadataReviewForm.cs
-├── MetadataReviewForm.Designer.cs
-├── README.md
-├── AI_USAGE_LOG.md
-└── Properties/
-    └── AssemblyInfo.cs
-```
-
-### `AddinoClass.cs`
-
-Contiene la clase principal cargada por Enterprise Architect y los callbacks requeridos:
-
-- `EA_Connect`
-- `EA_GetMenuItems`
-- `EA_GetMenuState`
-- `EA_MenuClick`
-- `EA_Disconnect`
-
-También valida que el usuario haya seleccionado un `EA.Package` válido y carga los elementos correspondientes.
-
-### `MetadataElementRow.cs`
-
-Representa localmente cada elemento mostrado en la grilla.
-
-Los datos editables se mantienen en memoria y no se enlazan directamente con objetos `EA.Element`, permitiendo cancelar modificaciones sin alterar accidentalmente el repositorio.
-
-### `MetadataReviewForm.cs`
-
-Implementa la ventana de revisión de metadatos:
-
-- visualización mediante `DataGridView`;
-- edición;
-- cancelación;
-- guardado;
-- control de cambios;
-- manejo de errores;
-- persistencia mediante `Element.Update()`.
-
----
-
-# Instalación y ejecución
-
-Para una explicación detallada y visual consultar:
-
-**`Pino_Guia_Ejecucion_Addino.pdf`**
-
-## Requisitos previos
-
-- Windows x64.
-- Visual Studio con soporte para .NET Framework.
-- .NET Framework 4.7.2.
-- Sparx Enterprise Architect instalado.
-- Acceso a `Interop.EA.dll`.
-- Permisos necesarios para compilar y registrar el componente COM.
-
-## 1. Abrir la solución
-
-Abrir:
-
-```text
-Addino.sln
-```
-
-Se recomienda ejecutar Visual Studio como **Administrador**, debido al registro COM realizado durante la compilación.
-
-## 2. Compilar
-
-Configuración validada:
-
-```text
-Debug | x64
-```
-
-Desde Visual Studio:
-
-```text
-Build → Build Solution
-```
-
-O mediante MSBuild:
+From `Exercise_1_Addin`:
 
 ```cmd
 msbuild Addino.csproj /t:Build /p:Configuration=Debug /p:Platform=x64
 ```
 
-Estado de la última validación:
+The expected assembly is:
 
 ```text
-0 errores
-0 advertencias
+bin\x64\Debug\Addino.dll
 ```
 
-## 3. Registro COM
+## Install and register
 
-Enterprise Architect debe poder localizar la clase COM del Add-in.
+1. Build the project as `Debug | x64`.
+2. Ensure Enterprise Architect can load the COM class `Addino.AddinoClass`.
+3. Register the add-in for 64-bit Enterprise Architect under:
 
-La configuración utilizada registra Addino bajo:
+   ```text
+   HKEY_CURRENT_USER\SOFTWARE\Sparx Systems\EAAddins64
+   ```
 
-```text
-HKEY_CURRENT_USER\SOFTWARE\Sparx Systems\EAAddins64
-```
+4. Start or restart Enterprise Architect after registration.
 
-La entrada de Addino debe apuntar a:
+The project uses `RegisterForComInterop`; registration may require an elevated Visual Studio or build environment. The configured `Interop.EA.dll` hint path is environment-specific and may need to match the local Enterprise Architect installation.
 
-```text
-Addino.AddinoClass
-```
+## Open the metadata review
 
-## 4. Abrir Enterprise Architect
+1. Open a repository in Enterprise Architect.
+2. Select an `EA.Package` in the Project Browser.
+3. Open **Specialize > Addino > Revisión de Metadatos de Elementos**.
+4. The modal **Revisión de Metadatos** window opens.
 
-1. Iniciar Enterprise Architect.
-2. Abrir el repositorio de trabajo.
-3. Localizar el **Project Browser**.
-4. Navegar hasta el paquete que se desea revisar.
+If the current selection is not a package, Addino shows a validation message and does not open the editor.
 
-## 5. Seleccionar un paquete
+## Package loading and columns
 
-Addino trabaja tomando como contexto el paquete seleccionado.
+The selected package is the traversal root. Addino performs an iterative, pre-order traversal of the complete descendant package tree:
 
-Debe seleccionarse un objeto de tipo:
+- direct elements are listed before descendant-package elements;
+- sibling order follows Enterprise Architect collection order;
+- visited `PackageID` values stop repeated or cyclic branches;
+- emitted `ElementID` values prevent duplicate rows;
+- recoverable package or element read failures are reported and the affected item or branch is skipped;
+- there is no functional depth limit.
 
-```text
-EA.Package
-```
+| Column | Editable | Meaning |
+|---|---:|---|
+| Nombre | Yes | Element name |
+| Alias | Yes | Element alias |
+| Notas | Yes | Element notes; multiline text is supported |
+| Tipo | No | Enterprise Architect element type |
+| Estereotipo | No | Applied stereotype |
+| Paquete | No | Derived path from the selected root to the element's direct parent |
 
-Si se selecciona un elemento, diagrama u otro objeto, Addino muestra un mensaje de validación y detiene el flujo de forma segura.
+`Paquete` is display-only and is never persisted to Enterprise Architect.
 
-## 6. Ejecutar Addino
+## Dirty rows and Save
 
-Con un paquete seleccionado:
+Edits remain in memory until **Guardar** is selected. A pale amber indicator marks editable cells in rows whose current Name, Alias, or Notes differ from their originally loaded values. Reverting all three values clears the indicator.
 
-1. Abrir la pestaña **Especializar** de Enterprise Architect.
-2. Localizar **Addino**.
-3. Ejecutar:
+Before any `Element.Update()` call, Save finalizes the active edit and validates every dirty row. A dirty row whose Name is empty or whitespace-only blocks the entire Save operation:
 
-```text
-Revisión de Metadatos de Elementos
-```
+- zero rows are updated;
+- all pending edits remain available;
+- invalid Name cells are highlighted;
+- one Spanish message identifies all invalid rows;
+- the form remains open for correction.
 
-Se abrirá la ventana modal **Revisión de Metadatos**.
+An untouched pre-existing blank Name is clean and does not block a different valid dirty row. If no rows are dirty, Addino reports that there are no pending changes and performs no writes.
 
----
+After the global Name gate passes, each dirty row is saved independently through `GetElementByID` and `Element.Update()`:
 
-# Uso
+- successful rows accept their new baseline and become clean;
+- failed rows remain dirty for correction or retry;
+- one row failure does not stop later rows;
+- the final Spanish summary reports successes and failures.
 
-## Elementos mostrados
+## Reload
 
-La grilla carga automáticamente los elementos contenidos **directamente** en el paquete seleccionado.
+**Recargar** uses the same package-tree loader as the initial open.
 
-En la versión base obligatoria no se recorren subpaquetes.
+- With no dirty rows, Reload runs immediately.
+- With dirty rows, Addino asks: `Hay cambios sin guardar. Recargar descartará esas modificaciones. ¿Desea continuar?`
+- **Yes** discards pending edits and reloads current Enterprise Architect values.
+- **No** preserves the exact current grid state.
+- Reload never calls Save or `Element.Update()`.
+- A successful reload produces clean rows and reflects external Enterprise Architect changes.
+- New rows are materialized before the visible list is replaced, so a catastrophic loader failure preserves the old grid.
 
-Si el paquete está vacío, Addino abre normalmente mostrando una grilla vacía.
+Selection, active column, and scroll restoration after Reload are best effort.
 
-## Columnas
+## Cancel and close
 
-| Columna | Editable | Descripción |
-|---|---|---|
-| Nombre | Sí | Nombre principal del elemento |
-| Alias | Sí | Alias o nombre alternativo |
-| Notas | Sí | Descripción del elemento |
-| Tipo | No | Tipo del elemento |
-| Estereotipo | No | Estereotipo aplicado |
+The **Cancelar** button, Escape key, and native window close button discard unsaved in-memory edits. None of these paths calls `Element.Update()`. Rows already saved before closing remain persisted.
 
-## Editar elementos
+## Native visual treatment
 
-Para modificar información:
+The form keeps standard sizable WinForms chrome. On supported Windows 11 systems, one bounded `DwmSetWindowAttribute` integration requests a `#557DA5` native caption with white text. If DWM is absent, unsupported, or fails, Addino opens normally with the standard native caption.
 
-1. Seleccionar una celda de **Nombre**, **Alias** o **Notas**.
-2. Escribir el nuevo valor.
-3. Continuar editando otras filas si es necesario.
+There is no internal title header, duplicate title, borderless custom chrome, manual window buttons, extra DWM integration, or external visual library. **Guardar** is the blue primary action; **Recargar** and **Cancelar** remain native secondary actions. The grid fills the form and the action panel remains anchored at the bottom-right during resize.
 
-Mientras no se presione **Guardar**, los cambios permanecen únicamente en memoria y el repositorio de Enterprise Architect no se modifica.
+## Creation and other limits
 
-### Notas multilínea
+- Addino does not create or delete Enterprise Architect elements.
+- It does not provide recursion toggles or a `MaxDepth` setting.
+- It edits only Name, Alias, and Notes.
+- COM access is synchronous; very large trees or slow repositories can make loading or saving take noticeable time.
+- Recoverable COM read failures can produce a partial grid with warnings.
+- Catastrophic Reload failure handling is implemented statically but was not safely fault-injected in the validated EA environment.
+- Native caption coloring depends on operating-system DWM support and falls back to standard chrome.
+- There is no automated test project or coverage runner; validation uses the x64 build plus approved manual Enterprise Architect human gates.
 
-La columna **Notas** admite texto multilínea.
+## Author
 
-Para insertar un salto de línea dentro de una celda:
-
-```text
-Shift + Enter
-```
-
-Este comportamiento fue comprobado manualmente dentro de Enterprise Architect.
-
----
-
-# Guardar cambios
-
-Al presionar **Guardar**, Addino:
-
-1. finaliza la edición activa;
-2. identifica únicamente las filas modificadas;
-3. recupera el elemento correspondiente mediante su `ElementId`;
-4. actualiza Nombre, Alias y Notas;
-5. ejecuta `Element.Update()`;
-6. comprueba el resultado devuelto por Enterprise Architect;
-7. continúa procesando las demás filas aunque alguna falle;
-8. muestra un resumen final en español.
-
-Las filas guardadas correctamente dejan de considerarse pendientes.
-
-## Guardar sin cambios
-
-Si no existen modificaciones pendientes, Addino no realiza escrituras innecesarias y muestra:
-
-```text
-No hay cambios pendientes para guardar.
-```
-
-Este escenario fue validado manualmente.
-
----
-
-# Cancelar cambios
-
-Una edición pendiente puede descartarse mediante:
-
-- botón **Cancelar**;
-- tecla **Escape**;
-- botón **X** de la ventana.
-
-En todos los casos:
-
-- el formulario se cierra;
-- los cambios todavía no guardados se descartan;
-- no se ejecuta `Element.Update()`;
-- los valores guardados previamente permanecen intactos.
-
----
-
-# Verificar persistencia
-
-Después de guardar:
-
-1. cerrar Addino;
-2. localizar el elemento modificado en Enterprise Architect;
-3. abrir sus propiedades;
-4. comprobar Nombre, Alias o Notas;
-5. verificar que el nuevo valor esté presente.
-
-También puede volver a abrirse Addino sobre el mismo paquete para confirmar que el valor persistido vuelve a cargarse.
-
-La persistencia fue validada manualmente en Enterprise Architect.
-
----
-
-# Manejo de errores
-
-El guardado se procesa de manera independiente para cada elemento.
-
-La implementación contempla:
-
-- `Element.Update() == false`;
-- errores al recuperar un elemento;
-- excepciones de Enterprise Architect / COM;
-- elementos bloqueados o no escribibles.
-
-Ante un fallo de una fila, Addino registra el error y continúa procesando las restantes.
-
-Los escenarios de `Update() == false`, excepciones COM y elementos realmente bloqueados cuentan con manejo implementado, aunque no todos pudieron reproducirse manualmente en el repositorio utilizado durante el desarrollo.
-
----
-
-# Pruebas y evidencia
-
-Las pruebas funcionales realizadas se encuentran documentadas en:
-
-```text
-Pino_Evidencias_Pruebas_Funcionales_Addino.pdf
-```
-
-Incluyen, entre otras:
-
-- carga del Add-in;
-- selección inválida;
-- selección de paquete válido;
-- paquete vacío;
-- carga de elementos;
-- permisos de edición;
-- Notas multilínea;
-- Cancelar / Escape / X;
-- guardado exitoso;
-- guardado sin cambios;
-- persistencia real;
-- conservación del último estado guardado.
-
-También se grabó un **video funcional completo** de la ejecución en Enterprise Architect.
-
-> El enlace definitivo al video será incorporado en la documentación final antes de la entrega.
-
----
-
-# Uso de Inteligencia Artificial
-
-El desarrollo fue asistido mediante herramientas y modelos de Inteligencia Artificial utilizando un flujo de trabajo basado en **Spec Driven Development (SDD)**.
-
-La trazabilidad completa de herramientas, modelos, prompts, decisiones y evidencias se documenta en:
-
-```text
-Pino_Registro_Uso_IA.pdf
-```
-
-y en la versión fuente:
-
-```text
-AI_USAGE_LOG.md
-```
-
-Las decisiones importantes fueron contrastadas contra:
-
-- la consigna original;
-- documentación de Enterprise Architect;
-- código fuente;
-- compilaciones reales;
-- control de versiones;
-- pruebas manuales dentro de Enterprise Architect.
-
----
-
-# Documentación adicional
-
-La entrega del Ejercicio 1 incluye:
-
-```text
-Pino_Guia_Ejecucion_Addino.pdf
-Pino_Evidencias_Pruebas_Funcionales_Addino.pdf
-Pino_Registro_Uso_IA.pdf
-```
-
-Además del código fuente y la solución Visual Studio.
-
----
-
-# Funcionalidades opcionales
-
-La primera versión de Addino fue desarrollada priorizando el cumplimiento completo del alcance obligatorio.
-
-Los desafíos opcionales definidos por la consigna se gestionarán como extensiones posteriores de la versión base:
-
-- recursividad en subpaquetes;
-- indicador visual de filas modificadas;
-- validación de Nombre vacío;
-- botón de recarga;
-- creación de nuevos elementos.
-
-La documentación será actualizada a medida que estas funcionalidades sean incorporadas y verificadas.
-
----
-
-## Autor
-
-**Ezequiel Pino**  
-Desafío Técnico de Práctica — Proagile 2026
+Ezequiel Pino — Proagile 2026 Technical Practice Challenge

@@ -17,8 +17,9 @@ namespace Addino
         {
             this.metadataGridView = new System.Windows.Forms.DataGridView();
             this.buttonPanel = new System.Windows.Forms.Panel();
-            this.cancelarButton = new System.Windows.Forms.Button();
             this.guardarButton = new System.Windows.Forms.Button();
+            this.recargarButton = new System.Windows.Forms.Button();
+            this.cancelarButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.metadataGridView)).BeginInit();
             this.buttonPanel.SuspendLayout();
             this.SuspendLayout();
@@ -26,6 +27,11 @@ namespace Addino
             // metadataGridView
             //
             this.metadataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metadataGridView.EnableHeadersVisualStyles = false;
+            this.metadataGridView.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(125)))), ((int)(((byte)(165)))));
+            this.metadataGridView.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            this.metadataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(125)))), ((int)(((byte)(165)))));
+            this.metadataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
             this.metadataGridView.Location = new System.Drawing.Point(0, 0);
             this.metadataGridView.Name = "metadataGridView";
             this.metadataGridView.Size = new System.Drawing.Size(900, 430);
@@ -34,12 +40,40 @@ namespace Addino
             // buttonPanel
             //
             this.buttonPanel.Controls.Add(this.cancelarButton);
+            this.buttonPanel.Controls.Add(this.recargarButton);
             this.buttonPanel.Controls.Add(this.guardarButton);
             this.buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.buttonPanel.Location = new System.Drawing.Point(0, 430);
             this.buttonPanel.Name = "buttonPanel";
             this.buttonPanel.Size = new System.Drawing.Size(900, 50);
             this.buttonPanel.TabIndex = 1;
+            //
+            // guardarButton
+            //
+            this.guardarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guardarButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(125)))), ((int)(((byte)(165)))));
+            this.guardarButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(125)))), ((int)(((byte)(165)))));
+            this.guardarButton.FlatAppearance.BorderSize = 1;
+            this.guardarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.guardarButton.ForeColor = System.Drawing.Color.White;
+            this.guardarButton.Location = new System.Drawing.Point(588, 12);
+            this.guardarButton.Name = "guardarButton";
+            this.guardarButton.Size = new System.Drawing.Size(96, 26);
+            this.guardarButton.TabIndex = 1;
+            this.guardarButton.Text = "Guardar";
+            this.guardarButton.UseVisualStyleBackColor = false;
+            this.guardarButton.Click += new System.EventHandler(this.GuardarButton_Click);
+            //
+            // recargarButton
+            //
+            this.recargarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.recargarButton.Location = new System.Drawing.Point(690, 12);
+            this.recargarButton.Name = "recargarButton";
+            this.recargarButton.Size = new System.Drawing.Size(96, 26);
+            this.recargarButton.TabIndex = 2;
+            this.recargarButton.Text = "Recargar";
+            this.recargarButton.UseVisualStyleBackColor = true;
+            this.recargarButton.Click += new System.EventHandler(this.RecargarButton_Click);
             //
             // cancelarButton
             //
@@ -48,22 +82,10 @@ namespace Addino
             this.cancelarButton.Location = new System.Drawing.Point(792, 12);
             this.cancelarButton.Name = "cancelarButton";
             this.cancelarButton.Size = new System.Drawing.Size(96, 26);
-            this.cancelarButton.TabIndex = 2;
+            this.cancelarButton.TabIndex = 3;
             this.cancelarButton.Text = "Cancelar";
             this.cancelarButton.UseVisualStyleBackColor = true;
             this.cancelarButton.Click += new System.EventHandler(this.CancelarButton_Click);
-            //
-            // guardarButton
-            //
-            this.guardarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.guardarButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.guardarButton.Location = new System.Drawing.Point(690, 12);
-            this.guardarButton.Name = "guardarButton";
-            this.guardarButton.Size = new System.Drawing.Size(96, 26);
-            this.guardarButton.TabIndex = 1;
-            this.guardarButton.Text = "Guardar";
-            this.guardarButton.UseVisualStyleBackColor = true;
-            this.guardarButton.Click += new System.EventHandler(this.GuardarButton_Click);
             //
             // MetadataReviewForm
             //
@@ -90,5 +112,6 @@ namespace Addino
         private System.Windows.Forms.Panel buttonPanel;
         private System.Windows.Forms.Button cancelarButton;
         private System.Windows.Forms.Button guardarButton;
+        private System.Windows.Forms.Button recargarButton;
     }
 }

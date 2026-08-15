@@ -11,6 +11,18 @@ namespace Addino
             string notes,
             string type,
             string stereotype)
+            : this(elementId, name, alias, notes, type, stereotype, string.Empty)
+        {
+        }
+
+        public MetadataElementRow(
+            int elementId,
+            string name,
+            string alias,
+            string notes,
+            string type,
+            string stereotype,
+            string packagePath)
         {
             ElementId = elementId;
             Name = name ?? string.Empty;
@@ -18,6 +30,7 @@ namespace Addino
             Notes = notes ?? string.Empty;
             Type = type ?? string.Empty;
             Stereotype = stereotype ?? string.Empty;
+            PackagePath = packagePath ?? string.Empty;
 
             OriginalName = Name;
             OriginalAlias = Alias;
@@ -35,6 +48,8 @@ namespace Addino
         public string Type { get; }
 
         public string Stereotype { get; }
+
+        public string PackagePath { get; }
 
         public string OriginalName { get; private set; }
 

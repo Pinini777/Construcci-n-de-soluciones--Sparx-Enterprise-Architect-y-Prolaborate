@@ -15,11 +15,11 @@ Evidence manifest and question → statement → result → model traceability f
 
 | ID | Business question | SQL file | EA Search display name | Expected oracle | Actual EA result | Oracle confirmation | Visible model check | Real evidence filename | Operator / date | Index status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Q1-C | How many applications have Categoria = ORO? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q1-C — Categoria ORO — Count | 8 | 8 | Yes | Categoria ORO tags compared; no non-application elements | `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` (real EA PDF evidence, Q1-C section) | Operator / 2026-08-13 | EA_PASS |
-| Q1-L | Which applications have Categoria = ORO? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q1-L — Categoria ORO — List | Aplicación 1, 2, 3, 4, 6, 8, 20, 29 | Aplicación 1, 2, 3, 4, 6, 8, 20, 29 | Yes | All rows are applications; `CLASSGUID`/`CLASSTYPE` navigation verified | `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` (real EA PDF evidence, Q1-L section) | Operator / 2026-08-13 | EA_PASS |
-| Q2-G | How many applications are Vigente / Deprecado? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q2-G — Vigencia — Grouped | Vigente=16, Deprecado=14 | Vigente=16, Deprecado=14 | Yes | Visible `Vigencia` tags sampled; no synthetic buckets or aliases | `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` (real EA PDF evidence, Q2-G section) | Operator / 2026-08-13 | EA_PASS |
-| Q3-C | How many applications depend on Base de Datos 28? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q3-C — DB28 Impact — Count | 5 | 5 | Yes | Dependency Start→End verified; Nodes absent | `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf` (real EA PDF evidence, Q3-C section) | Operator / 2026-08-14 | EA_PASS |
-| Q3-L | Which applications depend on Base de Datos 28? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q3-L — DB28 Impact — List | Aplicación 5, 12, 22, 25, 27 | Aplicación 5, 12, 22, 25, 27 | Yes | Source applications only; navigation from list row (Aplicación 22 and related links) verified | `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf` (real EA PDF evidence, Q3-L section) | Operator / 2026-08-14 | EA_PASS |
+| Q1-C | How many applications have Categoria = ORO? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q1-C — Categoria ORO — Count | 8 | 8 | Yes | Categoria ORO tags compared; no non-application elements | `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` (real EA PDF evidence, Q1-C section) | Operator / 2026-08-13 | EA_PASS |
+| Q1-L | Which applications have Categoria = ORO? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q1-L — Categoria ORO — List | Aplicación 1, 2, 3, 4, 6, 8, 20, 29 | Aplicación 1, 2, 3, 4, 6, 8, 20, 29 | Yes | All rows are applications; `CLASSGUID`/`CLASSTYPE` navigation verified | `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` (real EA PDF evidence, Q1-L section) | Operator / 2026-08-13 | EA_PASS |
+| Q2-G | How many applications are Vigente / Deprecado? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q2-G — Vigencia — Grouped | Vigente=16, Deprecado=14 | Vigente=16, Deprecado=14 | Yes | Visible `Vigencia` tags sampled; no synthetic buckets or aliases | `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` (real EA PDF evidence, Q2-G section) | Operator / 2026-08-13 | EA_PASS |
+| Q3-C | How many applications depend on Base de Datos 28? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q3-C — DB28 Impact — Count | 5 | 5 | Yes | Dependency Start→End verified; Nodes absent | `Pino_Evidencias_Funcionales_Queries.pdf` (real EA PDF evidence, Q3-C section) | Operator / 2026-08-14 | EA_PASS |
+| Q3-L | Which applications depend on Base de Datos 28? | `../queries/Pino_Exercise_2_EA_Governance_Queries.sql` | Q3-L — DB28 Impact — List | Aplicación 5, 12, 22, 25, 27 | Aplicación 5, 12, 22, 25, 27 | Yes | Source applications only; navigation from list row (Aplicación 22 and related links) verified | `Pino_Evidencias_Funcionales_Queries.pdf` (real EA PDF evidence, Q3-L section) | Operator / 2026-08-14 | EA_PASS |
 
 ## Q1 — Categoria ORO
 
@@ -32,7 +32,7 @@ Evidence manifest and question → statement → result → model traceability f
 - **Match:** Yes
 - **Visible model check:** Categoria ORO tags compared; no non-application elements included
 - **Navigation check:** Not applicable for aggregate row
-- **Real EA evidence:** `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` — real operator-provided EA PDF evidence; Q1-C result is captured in this document.
+- **Real EA evidence:** `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` — real operator-provided EA PDF evidence; Q1-C result is captured in this document.
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - **Fallback used:** None — primary EA execution passed
 - **Status:** EA_PASS
@@ -46,7 +46,7 @@ Evidence manifest and question → statement → result → model traceability f
 - **Match:** Yes (order-independent)
 - **Scope check:** All rows are `Object_Type='Class'` / `Stereotype='ArchiMate_ApplicationComponent'`; no non-application rows
 - **Navigation check:** At least one list row opened the model; `CLASSGUID`/`CLASSTYPE` aliases confirmed functional
-- **Real EA evidence:** `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` — real operator-provided EA PDF evidence; Q1-L result and navigation are captured in this document.
+- **Real EA evidence:** `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` — real operator-provided EA PDF evidence; Q1-L result and navigation are captured in this document.
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - **Fallback used:** None — primary EA execution passed
 - **Status:** EA_PASS
@@ -84,7 +84,7 @@ Evidence manifest and question → statement → result → model traceability f
 - **Match:** Yes
 - **Visible model check:** Operator compared visible `Vigencia` tags on sampled applications; tags matched the grouped result
 - **No synthetic buckets or aliases check:** Query reports only observed `Vigente` and `Deprecado` values; no NULL, empty, `N/A`, or `Unknown` bucket invented; no `CLASSGUID` or `CLASSTYPE` alias in the grouped result
-- **Real EA evidence:** `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` — real operator-provided EA PDF evidence; Q2-G grouped result is captured in this document.
+- **Real EA evidence:** `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` — real operator-provided EA PDF evidence; Q2-G grouped result is captured in this document.
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - **Fallback used:** None — primary EA execution passed
 - **Status:** EA_PASS
@@ -128,7 +128,7 @@ Evidence manifest and question → statement → result → model traceability f
 - **Target scope:** `Name='Base de Datos 28'` / `Object_Type='Class'` / `Stereotype='ArchiMate_DataObject'`
 - **Direction predicate:** None
 - **Object_ID=102 filter:** None
-- **Real EA evidence:** `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf` — real operator-provided EA PDF evidence; Q3-C result is captured in this document.
+- **Real EA evidence:** `Pino_Evidencias_Funcionales_Queries.pdf` — real operator-provided EA PDF evidence; Q3-C result is captured in this document.
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - **Fallback used:** None — primary EA execution passed
 - **Status:** EA_PASS
@@ -143,7 +143,7 @@ Evidence manifest and question → statement → result → model traceability f
 - **Uniqueness:** 5 distinct `src.Object_ID`s; no `Connector_ID` selected
 - **Scope check:** all rows are application sources; target is `Base de Datos 28`; Node sources absent
 - **Navigation aliases:** `CLASSGUID` and `CLASSTYPE` present on source application; navigation from list row (Aplicación 22 and related links) verified
-- **Real EA evidence:** `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf` — real operator-provided EA PDF evidence; Q3-L result and navigation are captured in this document.
+- **Real EA evidence:** `Pino_Evidencias_Funcionales_Queries.pdf` — real operator-provided EA PDF evidence; Q3-L result and navigation are captured in this document.
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - **Fallback used:** None — primary EA execution passed
 - **Status:** EA_PASS
@@ -192,16 +192,16 @@ Evidence manifest and question → statement → result → model traceability f
 - **Chart configuration:** Donut and bar widgets; Designer Configuration Class/ApplicationComponent; tag Vigencia values; per-application presentation query with `Series=Vigencia`
 - **Rendered result:** Donut Deprecado 46.67% / Vigente 53.33%; bars 14/16
 - **Adaptation:** Designer Configuration created the per-application presentation query, preserving exactly the Q2-G semantics and results; the final widgets use this Designer shape. The generic Open/Closed 75/25 preview binding was not used. The generated presentation query is not one of the official five SELECT statements. No `seriesproperty` used.
-- **Real Prolaborate evidence:** `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf` — real operator-provided EA PDF evidence; Prolaborate chart/dashboard is captured in this document.
-- **Documentation:** `../prolaborate/Pino_Exercise_2_Prolaborate_Q2.md`
+- **Real Prolaborate evidence:** `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` — real operator-provided main report; the Prolaborate chart/dashboard is captured in this document.
+- **Documentation:** `Pino_Exercise_2_Prolaborate_Q2.md`
 
 ## Evidence files
 
 | Path | Statement | Description |
 |---|---|---|
-| `sqlite/Pino_Exercise_2_SQLite_Diagnostics.md` | Q1-C, Q1-L, Q2-G, Q3-C, Q3-L | Read-only SQLite diagnostic transcript and proof. |
-| `Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` | Q1-C, Q1-L, Q2-G | Real operator-provided EA PDF evidence (physically found in `Exercise_2_queries/`). |
-| `Pino_Evidencias_Funcionales_Queries.pdf` | Q3-C, Q3-L, Prolaborate | Real operator-provided EA PDF evidence (physically found in `Exercise_2_queries/`). |
+| `Pino_Exercise_2_SQLite_Diagnostics.md` | Q1-C, Q1-L, Q2-G, Q3-C, Q3-L | Read-only SQLite diagnostic transcript and proof. |
+| `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` | Q1-C, Q1-L, Q2-G, Q3-C, Q3-L, Prolaborate | Real operator-provided main report, including the Prolaborate dashboard evidence. |
+| `Pino_Evidencias_Funcionales_Queries.pdf` | Q3-C, Q3-L functional test evidence | Real operator-provided functional test evidence. |
 
 ## Post-gate compatibility audit
 

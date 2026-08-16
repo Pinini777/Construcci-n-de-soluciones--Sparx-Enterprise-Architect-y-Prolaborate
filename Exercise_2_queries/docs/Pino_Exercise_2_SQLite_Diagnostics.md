@@ -6,7 +6,7 @@
 **Tool:** Python 3 `sqlite3` module (client version 3.50.4)  
 **Scope:** This diagnostic transcript covers WU1 scaffolding, WU2 Q1 through Gate Q1 (EA_PASS), WU3 Q2 through Gate Q2 (EA_PASS), and WU4 Q3 through Gate Q3 (EA_PASS). All three mandatory human EA gates have passed; SQLite remains the secondary diagnostic surface only.
 
-> **Important:** SQLite is the secondary diagnostic surface only. These results do NOT satisfy the mandatory Enterprise Architect SQL Search evidence requirement. Real EA evidence is provided by the operator PDFs indexed in `../Pino_Exercise_2_Evidence_Index.md`.
+> **Important:** SQLite is the secondary diagnostic surface only. These results do NOT satisfy the mandatory Enterprise Architect SQL Search evidence requirement. Real EA evidence is provided by the operator PDFs indexed in `Pino_Exercise_2_Evidence_Index.md`.
 
 ## Read-only mode proof
 

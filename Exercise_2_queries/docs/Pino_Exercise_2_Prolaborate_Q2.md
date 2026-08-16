@@ -63,9 +63,9 @@ The final widgets preserve exactly the Q2-G semantics and results:
 
 ## Evidence
 
-Real Prolaborate evidence is included in the operator-provided PDF:
+Real Prolaborate dashboard evidence is included in the operator-provided main report:
 
-- `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf`
+- `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf`
 
 ## Procedural note
 

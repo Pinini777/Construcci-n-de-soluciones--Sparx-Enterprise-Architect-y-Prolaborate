@@ -106,7 +106,7 @@ EA SQL Search uses `CLASSGUID` (the element `ea_guid`) and `CLASSTYPE` (the `Obj
 - All listed rows are applications (`Object_Type='Class'` / `Stereotype='ArchiMate_ApplicationComponent'`); no non-application elements appeared.
 - The visible `Categoria` tags matched the ORO filter.
 - At least one list row was opened to confirm EA navigation via the `CLASSGUID`/`CLASSTYPE` aliases.
-- Real EA evidence: `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` (operator-provided EA PDF).
+- Real EA evidence: `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` (operator-provided EA PDF).
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - No compatibility fallback was required.
 
@@ -172,7 +172,7 @@ ORDER BY tag.Value;
 - Sampled visible `Vigencia` tags on applications matched the grouped result.
 - No synthetic `NULL`, empty, `N/A`, or `Unknown` bucket was invented.
 - No representative-object `CLASSGUID` or `CLASSTYPE` alias was invented for the grouped rows.
-- Real EA evidence: `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` (operator-provided EA PDF).
+- Real EA evidence: `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` (operator-provided EA PDF).
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - No compatibility fallback was required.
 
@@ -280,7 +280,7 @@ These Node sources are excluded from Q3-C and Q3-L by the application source pre
 - All listed rows are application sources (`Object_Type='Class'` / `Stereotype='ArchiMate_ApplicationComponent'`); Node sources were absent.
 - Dependency orientation was verified as `Start_Object_ID` → source application, `End_Object_ID` → target `Base de Datos 28`.
 - Navigation from a list row (Aplicación 22 and related links) was verified via the `CLASSGUID`/`CLASSTYPE` aliases.
-- Real EA evidence: `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf` (operator-provided EA PDF).
+- Real EA evidence: `Pino_Evidencias_Funcionales_Queries.pdf` (operator-provided EA PDF).
 - **EA accepted form:** EA primary form accepted — no fallback required.
 - No compatibility fallback was required.
 
@@ -297,8 +297,8 @@ Real EA evidence was provided by the operator as PDF files physically present in
 
 | PDF file | Statements covered | Location |
 |---|---|---|
-| `Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` | Q1-C, Q1-L, Q2-G | `Exercise_2_queries/Pino_Exercise_2_Informe_Principal_Queries_EA.pdf` |
-| `Pino_Evidencias_Funcionales_Queries.pdf` | Q3-C, Q3-L, Prolaborate | `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf` |
+| `Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` | Q1-C, Q1-L, Q2-G, Q3-C, Q3-L, Prolaborate | `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf` |
+| `Pino_Evidencias_Funcionales_Queries.pdf` | Functional test evidence | `Pino_Evidencias_Funcionales_Queries.pdf` |
 
 These PDFs are treated as read-only real evidence; no screenshot filename, page number, or image content has been invented.
 
@@ -325,8 +325,8 @@ Prolaborate V5 was available and the optional follow-on was completed after all 
 - **Designer configuration:** Class / ApplicationComponent; tag Vigencia values; generate Series shape
 - **Rendered result:** Donut Deprecado 46.67% / Vigente 53.33%; bars 14/16
 - **Adaptation:** The Prolaborate widget preview showed a generic Open/Closed 75/25 binding; the final chart uses the EA-validated Q2-G semantics (no `seriesproperty`).
-- **Documentation:** `../prolaborate/Pino_Exercise_2_Prolaborate_Q2.md`
-- **Real evidence:** `Exercise_2_queries/Pino_Evidencias_Funcionales_Queries.pdf`
+- **Documentation:** `Pino_Exercise_2_Prolaborate_Q2.md`
+- **Real evidence:** `../Pino_Ejercicio_2_Informe_Principal_Queries_EA.pdf`
 
 ## Final state note
 
@@ -359,5 +359,5 @@ Prolaborate V5 was available and the optional follow-on was completed after all 
 ## References
 
 - `../queries/Pino_Exercise_2_EA_Governance_Queries.sql`
-- `../evidence/Pino_Exercise_2_Evidence_Index.md`
-- `../evidence/sqlite/Pino_Exercise_2_SQLite_Diagnostics.md`
+- `Pino_Exercise_2_Evidence_Index.md`
+- `Pino_Exercise_2_SQLite_Diagnostics.md`
